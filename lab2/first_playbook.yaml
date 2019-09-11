@@ -1,0 +1,45 @@
+---
+- name: First play
+  hosts: 127.0.0.1
+  remote_user: zekena
+  become: yes
+  tasks:
+  - name: ping
+    ping:
+  - name: create ssh keys
+    authorized_key: 
+        user: zekena
+        key: "{{ lookup('file', '/home/haman/.ssh/id_rsa.pub') }}"
+  - name: create ssh keys
+    authorized_key: 
+        user: zekena
+        key: https://github.com/romankuchin.keys
+  - name: disable sudo
+    copy:  
+      dest: /etc/sudoers.d/user
+      content: "zekena          ALL = NOPASSWD: ALL"
+  - name: create group teacher 
+    group:
+      name: teachers
+      state: present
+  - name: create group teacher 
+    group:
+      name: sysadmin
+      state: present
+  - name: create teachers
+    user: 
+      name: bala7a
+      groups: teachers,sysadmin
+      append: yes
+      generate_ssh_key: yes
+  - name: adding ssh keys
+    authorized_key: 
+      user: bala7a
+      key: https://github.com/romankuchin.keys
+  - name: Show proc list
+    command: "ps ax"
+    register: abc
+
+  - name: Show output
+    debug:
+      var: abc.stdout_lines

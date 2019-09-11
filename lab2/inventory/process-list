@@ -1,0 +1,99 @@
+127.0.0.1 | SUCCESS | rc=0 >>
+  PID TTY      STAT   TIME COMMAND
+    1 ?        Ss     0:01 /sbin/init maybe-ubiquity
+    2 ?        S      0:00 [kthreadd]
+    3 ?        I<     0:00 [rcu_gp]
+    4 ?        I<     0:00 [rcu_par_gp]
+    6 ?        I<     0:00 [kworker/0:0H-kblockd]
+    8 ?        I<     0:00 [mm_percpu_wq]
+    9 ?        S      0:00 [ksoftirqd/0]
+   10 ?        I      0:00 [rcu_sched]
+   11 ?        S      0:00 [migration/0]
+   12 ?        S      0:00 [idle_inject/0]
+   13 ?        I      0:00 [kworker/0:1-events]
+   14 ?        S      0:00 [cpuhp/0]
+   15 ?        S      0:00 [kdevtmpfs]
+   16 ?        I<     0:00 [netns]
+   17 ?        S      0:00 [rcu_tasks_kthre]
+   18 ?        S      0:00 [kauditd]
+   19 ?        S      0:00 [khungtaskd]
+   20 ?        S      0:00 [oom_reaper]
+   21 ?        I<     0:00 [writeback]
+   22 ?        S      0:00 [kcompactd0]
+   23 ?        SN     0:00 [ksmd]
+   24 ?        SN     0:00 [khugepaged]
+   25 ?        I<     0:00 [crypto]
+   26 ?        I<     0:00 [kintegrityd]
+   27 ?        I<     0:00 [kblockd]
+   28 ?        I<     0:00 [tpm_dev_wq]
+   29 ?        I<     0:00 [ata_sff]
+   30 ?        I<     0:00 [md]
+   31 ?        I<     0:00 [edac-poller]
+   32 ?        I<     0:00 [devfreq_wq]
+   33 ?        S      0:00 [watchdogd]
+   37 ?        S      0:00 [kswapd0]
+   38 ?        I<     0:00 [kworker/u3:0]
+   39 ?        S      0:00 [ecryptfs-kthrea]
+  128 ?        I<     0:00 [kthrotld]
+  129 ?        I<     0:00 [acpi_thermal_pm]
+  130 ?        S      0:00 [scsi_eh_0]
+  131 ?        I<     0:00 [scsi_tmf_0]
+  132 ?        S      0:00 [scsi_eh_1]
+  133 ?        I<     0:00 [scsi_tmf_1]
+  136 ?        I<     0:00 [ipv6_addrconf]
+  147 ?        I<     0:00 [kstrp]
+  166 ?        I<     0:00 [charger_manager]
+  167 ?        I<     0:00 [kworker/0:1H-kblockd]
+  204 ?        S      0:00 [scsi_eh_2]
+  206 ?        I<     0:00 [scsi_tmf_2]
+  208 ?        I<     0:00 [ttm_swap]
+  302 ?        I<     0:00 [raid5wq]
+  340 ?        S      0:00 [jbd2/sda2-8]
+  341 ?        I<     0:00 [ext4-rsv-conver]
+  407 ?        S<s    0:00 /lib/systemd/systemd-journald
+  409 ?        I<     0:00 [iscsi_eh]
+  414 ?        I<     0:00 [ib-comp-wq]
+  420 ?        I<     0:00 [ib-comp-unb-wq]
+  421 ?        I<     0:00 [ib_mcast]
+  423 ?        I<     0:00 [ib_nl_sa_wq]
+  427 ?        I<     0:00 [rdma_cm]
+  441 ?        Ss     0:00 /lib/systemd/systemd-udevd
+  456 ?        I<     0:00 [iprt-VBoxWQueue]
+  580 ?        I<     0:00 [kaluad]
+  581 ?        I<     0:00 [kmpath_rdacd]
+  582 ?        I<     0:00 [kmpathd]
+  583 ?        I<     0:00 [kmpath_handlerd]
+  584 ?        SLsl   0:00 /sbin/multipathd -d -s
+  591 ?        Ss     0:00 /sbin/lvmetad -f
+  595 ?        S<     0:00 [loop0]
+  596 ?        S<     0:00 [loop1]
+  614 ?        Ssl    0:00 /lib/systemd/systemd-timesyncd
+  643 ?        Ss     0:00 /lib/systemd/systemd-networkd
+  644 ?        Ss     0:00 /lib/systemd/systemd-resolved
+  660 ?        Ssl    0:00 /usr/lib/accountsservice/accounts-daemon
+  670 ?        Ss     0:00 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+  675 ?        Ss     0:00 /usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers
+  676 ?        Ss     0:00 /lib/systemd/systemd-logind
+  685 ?        Ssl    0:00 /usr/sbin/rsyslogd -n
+  688 ?        Ss     0:00 /usr/sbin/cron -f
+  698 ?        Ssl    0:00 /usr/lib/snapd/snapd
+  699 ?        Ss     0:00 /usr/sbin/atd -f
+  704 ?        Ss     0:00 /usr/sbin/sshd -D
+  737 tty1     Ss     0:00 /bin/login -p --
+  742 ?        Ssl    0:00 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal
+  881 ?        Ss     0:00 /lib/systemd/systemd --user
+  882 ?        S      0:00 (sd-pam)
+  892 tty1     S+     0:00 -bash
+ 1020 ?        I      0:00 [kworker/u2:2-events_power_efficient]
+ 1051 ?        I      0:00 [kworker/0:0-mm_percpu_wq]
+ 1307 ?        I      0:00 [kworker/u2:0-events_power_efficient]
+ 1759 ?        I      0:00 [kworker/0:2-mm_percpu_wq]
+ 1772 ?        I      0:00 [kworker/u2:1-events_power_efficient]
+ 1779 ?        Ss     0:00 sshd: zekena [priv]
+ 1854 ?        S      0:00 sshd: zekena@pts/0
+ 1887 pts/0    Ss+    0:00 /bin/sh -c /usr/bin/python /home/zekena/.ansible/tmp/ansible-tmp-1567620616.54-171408133100292/command.py && sleep 0
+ 1888 pts/0    S+     0:00 /usr/bin/python /home/zekena/.ansible/tmp/ansible-tmp-1567620616.54-171408133100292/command.py
+ 1889 pts/0    S+     0:00 /usr/bin/python /tmp/ansible_ydf2nm/ansible_module_command.py
+ 1890 pts/0    S+     0:00 /bin/sh -c ps ax
+ 1891 pts/0    R+     0:00 ps ax
+
