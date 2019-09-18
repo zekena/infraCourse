@@ -1,0 +1,39 @@
+---
+- name: first play
+  hosts: 127.0.0.1
+  remote_user: zekena
+  become: yes
+  tasks:
+  - name: disable sudo
+    copy: 
+      dest: /etc/sudoers.d/zekena
+      content: "zekena          ALL = NOPASSWD: ALL"
+  - name: update
+    apt:
+      update_cache: yes
+      name: apache2
+      state: present
+    environment:
+      RUNLEVEL: 1
+  - name: editing apache confg file
+    copy:
+      src: /home/haman/ports.conf
+      dest: /etc/apache2/ports.conf
+  - name: copy the virtualhostfile
+    copy:
+      src: /home/haman/virtualhost.conf
+      dest: /etc/apache2/sites-available
+  - name: install php
+    apt: 
+      name: libapache2-mod-php 
+      update_cache: yes
+      state: present
+  - name: copy php
+    copy:
+      src: /home/haman/phpinfo.php
+      dest: /var/www/html 
+  - name: restart apache
+    service:
+      name: apache2
+      state: restarted
+
