@@ -17,11 +17,11 @@
       RUNLEVEL: 1
   - name: editing apache confg file
     copy:
-      src: /home/haman/ports.conf
+      src: /home/haman/infraCourse/lab3/ports.conf
       dest: /etc/apache2/ports.conf
   - name: copy the virtualhostfile
     copy:
-      src: /home/haman/virtualhost.conf
+      src: /home/haman/infraCourse/lab3/virtualhost.conf
       dest: /etc/apache2/sites-available
   - name: install php
     apt: 
@@ -30,8 +30,12 @@
       state: present
   - name: copy php
     copy:
-      src: /home/haman/phpinfo.php
-      dest: /var/www/html 
+      src: /home/haman/infraCourse/lab3/phpinfo.php
+      dest: /var/www/html
+  - name: making php as default
+    copy:
+      src: /home/haman/infraCourse/lab3/apache2.conf
+      dest: /etc/apache2/apache2.conf    
   - name: restart apache
     service:
       name: apache2
