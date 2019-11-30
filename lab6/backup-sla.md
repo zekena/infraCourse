@@ -10,6 +10,9 @@
 
 ## Frequency
  All the data that's covered will be backuped every 15 day starting from the 1st day of the month at 1 am.
+ Incremential backup will be made every 3 days starting with 4th day of the month for:
+ - logs
+ - database wordpress
 
 ## Retention
 
