@@ -1,0 +1,11 @@
+$TTL	604800
+@	IN	SOA	zekena.ttu. root.zekena.ttu. (
+			     {{ ts.stdout_lines[0] }}		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			 604800 )	; Negative Cache TTL
+;
+{% for i in dns_records %}
+{{ i.name}} IN {{ i.type }}  {{ i.address }}
+{% endfor%}

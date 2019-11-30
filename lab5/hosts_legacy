@@ -1,0 +1,5 @@
+[dns]
+infra01 ansible_host=127.0.0.1 ansible_ssh_port=2222 ansible_user=zekena ansible_python_interpreter=python3
+
+[dns2]
+infra02 ansible_host=127.0.0.1 ansible_ssh_port=3322 ansible_user=zekena2 ansible_python_interpreter=python3
