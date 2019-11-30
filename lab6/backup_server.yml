@@ -1,0 +1,29 @@
+---
+- name: backup server configuration
+  hosts: infra02
+  become: yes
+  tasks:
+
+  - name: create backup user
+    user:
+      name: backup
+      groups: adm,sudo
+      shell: /bin/bash
+      home: /home/backup
+      append: yes
+      generate_ssh_key: yes
+      ssh_key_bits: 2048
+      ssh_key_file: /home/backup/.ssh/id_rsa
+      password: ""
+      state: present
+  - name: Create a directory if it does not exist
+    file:
+      path: /srv/backup
+      state: directory
+      mode: '0755'
+      seuser: backup
+  - name: copy authorized keys of wordpress(backup)
+    authorized_key:
+      user: backup
+      state: present
+      key: "{{ lookup('file', '/home/haman/infraCourse/lab6/key/id_rsa(infra01-bakcup).pub') }}"
