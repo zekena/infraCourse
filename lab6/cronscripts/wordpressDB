@@ -1,0 +1,5 @@
+0 1 1,15 * * backup-agent mysqldump wordpress > backups/wordpressdb/wordpress.sql
+22 1 1,15 * * backup-agent duplicity --no-encryption full backups/wordpressdb/wordpress.sql rsync://backup-server@192.168.56.101/srv/backup/wordpressdb
+0 12 * * * backup-agent mysqldump wordpress > backups/wordpressdb/wordpress.sql
+22 12 * * * backup-agent duplicity --no-encryption incremental backups/wordpressdb/wordpress.sql rsync://backup-server@192.168.56.101/srv/backup/wordpressdb
+20 0 * * 0 backup duplicity remove-older-than 30d rsync://backup@192.168.56.101//srv/backup/wordpressdb

@@ -1,36 +1,63 @@
 ---
 - name: backup-agent
-  hosts: infra01
+  hosts: infra02
   become: yes
+  vars:
+    my_pass: !vault |
+        $ANSIBLE_VAULT;1.1;AES256
+        62366435613330613763303964303834633262373031313039373835393036366134643434343531
+        6335666636376235336139323939336332303366646538390a613662303463353331626663623864
+        30303435626137393633316166313532333830643866336464383734653638616663656565613435
+        3264353761336233650a656431363636396430343034336666386464316666643331336463353631
+        3330
   tasks:
     - name: create backup user
       user:
-        name: backup
+        name: backup-agent
         groups: adm,sudo
         shell: /bin/bash
-        home: /home/backup
+        home: /home/backup-agent
         append: yes
         generate_ssh_key: yes
         ssh_key_bits: 2048
-        ssh_key_file: /home/backup/.ssh/id_rsa
+        ssh_key_file: /home/backup-agent/.ssh/id_rsa
         password: ""
         state: present
-    - name: Create a directory if it does not exist
-      file:
-        path: /srv/backup
-        state: directory
-        mode: '0755'
-        seuser: backup
-    - name: install pip
-      apt:
-        name: python3-pip
+    - name: copy authorized keys of wordpress(backup)
+      authorized_key:
+        user: backup-agent
         state: present
-    - name: install junos_scp
-      pip:
-        name: junos_eznc
-
-    - name: copy the public key to the host machine
-      fetch:
-        src: /home/backup/.ssh/id_rsa.pub
-        dest: /home/haman/infraCourse/lab6/id_rsa(infra01-bakcup).pub
-        flat: true
+        key: "{{ lookup('file', '/home/haman/infraCourse/lab6/key/id_rsa(infra01-bakcup).pub') }}"
+    - name: copy the user and password file of the database to the backup-agent user
+      template:
+        src: templates/.my.cnf
+        dest: /home/backup-agent/.my.cnf
+      notify:
+        - restart MySQL
+    - name: install duplicity
+      apt:
+        name: duplicity
+        state: present
+    - name: make backup directory in the home folder
+      file:
+        path: /home/backup-agent/backups/{{ item }}
+        state: directory
+        mode: '741'
+        owner: backup-agent
+      with_items:
+      - wordpressdb
+      - webserver_logs
+      - DNS_configs
+    - name: copying crontabs
+      template:
+        src: cronscripts/{{ item }}
+        dest: /etc/cron.d/{{ item }}
+      with_items:
+        - DNS
+        - wordpressDB
+        - webserverslogs
+  handlers:
+    - name: restart MySQL
+      service:
+        name: mysql
+        state: restarted

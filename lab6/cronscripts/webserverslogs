@@ -1,0 +1,3 @@
+15 1 1,15 * * duplicity --no-encryption full backups/webserver_logs file://backup-server@192.168.56.101/var/log/apache2/*
+15 12 * * * duplicity --no-encryption incremental backups/webserver_logs file://backup-server@192.168.56.101/var/log/apache2/*
+20 0 * * 0 backup duplicity remove-older-than 30d backups/webserver_logs rsync://backup@192.168.56.101//srv/backup/webserver_logs
