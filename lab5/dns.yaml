@@ -21,7 +21,7 @@
       shell: netplan apply
 
 - name: setup dns
-  hosts: infra
+  hosts: all
   become: yes
   tasks:
 
@@ -44,8 +44,6 @@
       notify:
         - restart bind
         - check conf
-      when: dns_role == "master"
-      notify:
         - bind reload db
 
     - name: write hash

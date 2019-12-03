@@ -1,14 +1,13 @@
---- 
+---
 - name: initiale database setup
-  hosts: database
-  remote_user: zekena2
+  hosts: infra02
   become: yes
   tasks:
     - name: place ssh keys
       authorized_key:
         user: backup
         key: https://github.com/zekena.keys
-  
+
     - name: disable sudo pass
       copy:
         dest: /etc/sudoers.d/backup
@@ -23,9 +22,8 @@
       authorized_key:
         user: backup
         key: https://github.com/zekena.keys
-  
+
     - name: disable sudo pass
       copy:
         dest: /etc/sudoers.d/backup
         content: "backuo ALL = NOPASSWD: ALL"
-

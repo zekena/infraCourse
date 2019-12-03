@@ -1,0 +1,20 @@
+---
+- name: bind
+  hosts: infra
+  become: yes
+  roles:
+    - bind
+    - custom_exporter
+    - node_exporter
+    - apache_exporter
+- name: prometheus
+  hosts: infra01
+  become: yes
+  roles:
+    - prometheus
+    - grafana
+- name: mysql_exporter
+  hosts: infra02
+  become: yes
+  roles:
+    - mysql_exporter

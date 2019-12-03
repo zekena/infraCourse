@@ -1,0 +1,55 @@
+- name: check that file exists
+  stat:
+    path: /opt/mysqld_exporter
+  register: stat_result
+- name: create a folder
+  file:
+    path: /opt/mysqld_exporter
+    state: directory
+    mode: '0755'
+  when: stat_result.stat.exists == False
+
+- name: Download mysqld exporter
+  unarchive:
+    src: https://github.com/prometheus/mysqld_exporter/releases/download/v0.12.1/mysqld_exporter-0.12.1.linux-amd64.tar.gz
+    dest: /opt/mysqld_exporter
+    remote_src: yes
+    extra_opts:
+      - --strip-components=1
+  when: stat_result.stat.exists == False
+
+- name: add mysql exporter to systemd
+  template:
+    src: templates/mysqld_exporter.service.j2
+    dest: /etc/systemd/system/mysqld_exporter.service
+  notify: restart systemd
+
+- name: start exporter
+  service:
+    name: mysqld_exporter
+    state: started
+    enabled: yes
+
+- name: Check if exporter user exists
+  command: "mysql -u exporter -p{{ my_pass }}"
+  register: mysqld_exporter_user
+  ignore_errors: true
+  no_log: true
+  changed_when: false
+
+- name: Create mysqld_exporter user
+  command: mysql -u root -e "CREATE USER 'exporter'@'localhost' IDENTIFIED BY '{{ my_pass }}' WITH MAX_USER_CONNECTIONS 3;"
+  when: mysqld_exporter_user.rc != 0
+
+- name: Copy .my.cnf file
+  template:
+    src: templates/.my.cnf.j2
+    dest: /root/.my.cnf
+
+- name: Make sure mysqld_exporter user has correct privileges on databases
+  mysql_user:
+    name: exporter
+    host: localhost
+    state: present
+    priv: '*.*:PROCESS,REPLICATION CLIENT'
+    login_user: root

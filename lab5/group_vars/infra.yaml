@@ -14,13 +14,13 @@ dns_records:
 
   - name: zekena.ttu.
     type: NS
-    address: infra01.zekena.ttu.
+    address: infra02.zekena.ttu.
 
   - name: infra01.zekena.ttu.
     type: A
     address: 192.168.56.101
 
-  - name: infra01.zekena.ttu.
+  - name: infra02.zekena.ttu.
     type: A
     address: 192.168.56.102
 

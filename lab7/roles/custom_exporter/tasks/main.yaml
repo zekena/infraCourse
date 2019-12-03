@@ -1,0 +1,16 @@
+- name: upload binary
+  copy:
+    src: templates/custom_exporter
+    dest: /usr/local/bin/custom_exporter
+    mode: u=rwx,g=r,o=r
+
+- name: systemd custom_exporter
+  template:
+    src: custom_exporter.service.j2
+    dest: /etc/systemd/system/custom_exporter.service
+
+- name: start exporter
+  service:
+    name: custom_exporter
+    state: started
+    enabled: yes

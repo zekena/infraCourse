@@ -4,7 +4,7 @@
 # You can copy this to one of:
 # - "/etc/mysql/my.cnf" to set global options,
 # - "~/.my.cnf" to set user-specific options.
-# 
+#
 # One can use all long options that the program supports.
 # Run program with --help to get a list of available options and with
 # --print-defaults to see which it would actually understand and use.
@@ -40,7 +40,7 @@ skip-external-locking
 #
 # Instead of skip-networking the default is now to listen only on
 # localhost which is more compatible and is not less secure.
-bind-address		= 0.0.0.0
+bind-address		= 192.168.56.101
 #
 # * Fine Tuning
 #
@@ -103,4 +103,3 @@ max_binlog_size   = 100M
 # ssl-ca=/etc/mysql/cacert.pem
 # ssl-cert=/etc/mysql/server-cert.pem
 # ssl-key=/etc/mysql/server-key.pem
-

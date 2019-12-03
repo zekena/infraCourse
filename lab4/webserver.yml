@@ -1,7 +1,6 @@
 ---
 - name: installing wordpress
-  hosts: wordpress
-  remote_user: zekena
+  hosts: infra01
   become: yes
   vars:
     wp_install_path: '/var/www'
@@ -15,12 +14,12 @@
           3330
 
 
-  tasks: 
+  tasks:
     - name: install apache
-      apt: 
+      apt:
         name: apache2
         state: present
- 
+
     - name: Enable mod rewrite
       apache2_module:
         state: present
@@ -36,12 +35,12 @@
 
         # - name: a2ensite wpdomain.conf
      # command: sudo a2ensite wpdomain
- 
+
     - name: enable the use of .htaccess files in any projects
       copy:
         src: enable_htaccess.conf
         dest: /etc/apache2/sites-available/enable_htaccess.conf
- 
+
     - name: enable the .htaccess vhost
       file:
         src: /etc/apache2/sites-available/enable_htaccess.conf
@@ -62,11 +61,16 @@
         src: index.php
         dest: /var/www/php
 
-    
-    - name: install PHP
-      apt: 
-        name: php
 
+    - name: install PHP
+      apt:
+        name: ['php','php-mysqlnd']
+
+    - name: edit the DocumentRoot
+      template:
+        src: 000-default.conf
+        dest: /etc/apache2/sites-enabled/000-default.conf
+        
     - name: restart apache2
       service:
         name: apache2
@@ -75,59 +79,58 @@
     - name: Concantenate the install and directory into a single variable
       set_fact:
         path: "{{wp_install_path}}/{{wp_directory_name}}"
- 
+
     - name: Only install WordPress when there is no index.php in the path
       stat:
         path: "{{path}}/index.php"
       register: stat_result
-   
+
     - name: Ensure that installation directory exists
       file: path={{path}} state=directory
       when: stat_result.stat.exists == False
-    
+
     - name: Download Latest Version to /tmp
       get_url: url=https://wordpress.org/latest.tar.gz force=no dest=/tmp/wordpress.tar.gz
       when: stat_result.stat.exists == False
-    
+
     - name: Extract archive
       unarchive: src=/tmp/wordpress.tar.gz dest=/tmp copy=no
       when: stat_result.stat.exists == False
-    
-    
+
+
     - name: Move extracted directory to {{path}}
       shell: cp -r -n /tmp/wordpress/* {{path}}
       when: stat_result.stat.exists == False
-    
-    
+
+
     - name: Remove wordpress.tar.gz
       file: path=/tmp/wordpress.tar.gz state=absent
       when: stat_result.stat.exists == False
-    
+
     - name: Fetch random salts for WordPress config
       local_action: command curl https://api.wordpress.org/secret-key/1.1/salt/
       register: "wp_salt"
       become: no
       become_method: sudo
-    
-    
+
+
     - name: Change ownership of installation directory
       file: path={{path}} owner=www-data group=www-data  state=directory recurse=yes setype=httpd_sys_content_t
       when: stat_result.stat.exists == False
-    
+
     - name: Change ownership of wp-content directory
       file: path={{path}}/wp-content/ owner=www-data group=www-data mode=755 state=directory recurse=yes
       when: stat_result.stat.exists == False
     - name: copy the wp config file
-      template: 
+      template:
         src: wp-config.php
-        dest: /var/www/wordpress/wp-config.php 
+        dest: /var/www/wordpress/wp-config.php
 
 - name: Fourth play
-  hosts: database 
-  remote_user: zekena2
+  hosts: infra02
   become: yes
-  tasks: 
-    - name: 
+  tasks:
+    - name:
       apt:
         name: "{{  item  }}"
         state: present
@@ -139,31 +142,31 @@
         name: python-mysqldb
         update_cache: yes
         state: present
-  
+
     - name: install MySQL Server
       apt:
         name: mysql-server
         state: present
-  
+
     - name: install MySQL Client
       apt:
         name: mysql-client
         state: present
-  
+
     - name: install MySQL Common
       apt:
         name: mysql-common
         state: present
-  
+
     - name: ensure MySQL always starts
       service:
         name: mysql
         state: started
-        enabled: yes 
-    
+        enabled: yes
+
     - name: Create our WordPress database
       mysql_db:
-        login_unix_socket: "/var/run/mysqld/mysqld.sock"      
+        login_unix_socket: "/var/run/mysqld/mysqld.sock"
         name: wordpress
         state: present
       vars:
@@ -174,10 +177,10 @@
           30303435626137393633316166313532333830643866336464383734653638616663656565613435
           3264353761336233650a656431363636396430343034336666386464316666643331336463353631
           3330
-     
+
     - name: Create a new database user and password
       mysql_user:
-        login_unix_socket: "/var/run/mysqld/mysqld.sock"        
+        login_unix_socket: "/var/run/mysqld/mysqld.sock"
         name: local
         state: present
         priv: '*.*:ALL,GRANT'
@@ -195,9 +198,8 @@
       template:
         src: mysqld.cnf
         dest: /etc/mysql/mysql.conf.d/mysqld.cnf
-    
+
     - name: restart mysql
       service:
         name: mysql
         state: restarted
-

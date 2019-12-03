@@ -1,0 +1,7 @@
+- name: restart systemd
+  shell : "systemctl daemon-reload"
+
+- name: restart mysqld_exporter
+  service:
+    name: mysqld_exporter
+    state: restarted
