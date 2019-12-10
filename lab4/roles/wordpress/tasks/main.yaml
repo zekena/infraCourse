@@ -1,0 +1,43 @@
+- name: Update all packages to the latest version
+  apt:
+    update_cache: yes
+- name: Install required apps
+  apt:
+    name: ["apache2", "php7.2", "php-mysql", "libapache2-mod-php","mysql-client-core-5.7"]
+    update_cache: yes
+    state: present
+- name: virtualhost on port 80
+  copy:
+    dest: /etc/apache2/sites-available/000-default.conf
+    src: templates/000-default.conf
+  notify: Reload Apache
+- name: download wordpress
+  get_url:
+    url: https://wordpress.org/latest.tar.gz
+    dest: /wordpress.tar.gz
+- name: Listen on Apache Ports
+  copy:
+    src: ./templates/ports.conf
+    dest: /etc/apache2/ports.conf
+  notify: Reload Apache
+- name: Make php virtualhost
+  copy:
+    src: ./templates/8080-php.conf
+    dest: /etc/apache2/sites-enabled/8080-php.conf
+  notify: Reload Apache
+- name: Put PHP Index.php file
+  copy:
+    src: ./templates/index.php
+    dest: /var/www/php/
+- name: unzip wordpress
+  unarchive:
+    src: /wordpress.tar.gz
+    dest: /var/www
+    copy: no
+- name: copy wp-config.php to local
+  template:
+    src: templates/wp-config.php
+    dest: /var/www/wordpress/wp-config.php
+- name: fix php
+  shell: sudo a2dismod mpm_event && sudo a2enmod mpm_prefork && sudo a2enmod php7.2
+  notify: Reload Apache

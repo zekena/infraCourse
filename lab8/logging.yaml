@@ -1,0 +1,18 @@
+---
+- name: install influxdb
+  hosts: infra02
+  become: yes
+  roles:
+    - influxdb
+
+- name: install bind
+  hosts: infra
+  become: yes
+  roles:
+    - bind
+
+- name: install grafana
+  hosts: infra01
+  become: yes
+  roles:
+    - grafana

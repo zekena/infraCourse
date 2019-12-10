@@ -38,3 +38,5 @@ records:
         address: infra01
       - name: prometheus
         address: infra01
+      - name: influxdb
+        address: infra02

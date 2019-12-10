@@ -1,0 +1,28 @@
+---
+- name: init1
+  hosts: infra01
+  become: yes
+  roles:
+    - init
+  vars:
+    - user: infra01
+  tags: i1
+- name: init2
+  hosts: infra02
+  become: yes
+  roles:
+    - init
+  vars:
+    - user: infra02
+  tags: i2
+- name: install mysql
+  hosts: infra02
+  become: yes
+  roles:
+    - mysql
+
+- name: install wordpress
+  hosts: infra01
+  become: yes
+  roles:
+    - wordpress

@@ -1,0 +1,33 @@
+- name: Install MYSQL Server
+  apt:
+    name: ["mysql-server","mysql-common","mysql-client"]
+    state: present
+- name: Install PyMYSQL
+  apt:
+    name: ["python-dev","libmysqlclient-dev","python-pymysql", "python3-pymysql","python-mysqldb"]
+    state: present
+  become: yes
+- name: Start Mysql Service
+  service:
+    name: mysql
+    state: started
+    enabled: true
+- name: create a new database with its name
+  mysql_db:
+    name: "{{ wp_mysql_db }}"
+    state: present
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+- name: create db user
+  mysql_user:
+    name: "{{ wp_mysql_user }}"
+    password: "{{ wp_mysql_password }}"
+    priv: "{{ wp_mysql_db }}.*:ALL"
+    state: present
+    host: 192.168.56.101
+    login_host: 192.168.56.102
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+- name: make mysql accept other networks
+  template:
+    src: templates/mysqld.cnf.j2
+    dest: /etc/mysql/mysql.conf.d/mysqld.cnf
+  notify: reload mysql

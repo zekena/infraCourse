@@ -1,0 +1,13 @@
+- name: setup network
+  template:
+    src: 60-enp0s8.j2
+    dest: /etc/netplan/60-enp0s8.yaml
+  notify:
+    - netplan apply
+
+- name: setup syslog
+  template:
+    src: 51-telegraf.conf
+    dest: /etc/rsyslog.d/51-telegraf.conf
+  notify:
+    - restart rsyslog
