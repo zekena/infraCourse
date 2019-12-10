@@ -41,7 +41,7 @@
     - bind reload db
 - name: check that file exists
   stat:
-    path: /opt/node_exporte
+    path: /opt/go1.13.3.linux-amd64.tar.gz
   register: stat_result1
 
 - name: download go
@@ -54,13 +54,16 @@
     path: /opt/go
     state: directory
     mode: '0755'
-
+- name: check that file exists
+  stat:
+    path: /opt/go1.13.3.linux-amd64.tar.gz
+  register: stat_result2
 - name: untar
   unarchive:
     src: /opt/go1.13.3.linux-amd64.tar.gz
     dest: /opt/go
     remote_src: yes
-
+  when: stat_result2.stat.exists == False
 - name: Create a symbolic link
   file:
     src: /opt/go/go/bin/go

@@ -1,5 +1,5 @@
 ---
-- name: bind
+- name: bind9
   become: yes
   hosts: all
   roles:
@@ -9,5 +9,6 @@
   hosts: infra01
   roles:
     - wordpress
+    - prometheus
     - haproxy
 

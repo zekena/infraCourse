@@ -1,7 +1,7 @@
 - name: restart systemd
   shell : "systemctl daemon-reload"
 
-- name: restart node_exporter
+- name: restart prometheus
   service:
-    name: node_exporter
+    name: prometheus
     state: restarted

@@ -41,7 +41,7 @@
     - bind reload db
 - name: check that file exists
   stat:
-    path: /opt/node_exporte
+    path: /opt/bind_exporte
   register: stat_result1
 
 - name: download go
