@@ -1,0 +1,19 @@
+---
+- name: All VMs
+  become: yes
+  hosts: all
+  roles:
+    - bind
+
+- name: Non-Docker
+  become: yes
+  hosts: infra02
+  roles:
+    - mysql
+    - prometheus
+- name: docker
+  become: yes
+  hosts: infra01
+  roles:
+    - wordpress
+    - grafana
