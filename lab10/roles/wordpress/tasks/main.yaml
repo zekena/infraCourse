@@ -1,0 +1,27 @@
+- name: install python pip
+  apt:
+    state: latest
+    name: ['docker.io','python3-pip']
+
+- name: Install docker pip
+  pip:
+    name:
+      - docker
+      - requests>=2.20.1
+- name: Wordpress Docker Container
+  docker_container:
+      name: www-{{ item }}
+      image: wordpress:latest
+      detach: True
+      published_ports:
+      - 8{{ item }}80:80
+      env: 
+        WORDPRESS_DB_USER={{ mysql_db_user }},
+        WORDPRESS_DB_HOST=db.zekena.ttu:3306,
+        WORDPRESS_DB_PASSWORD={{ mysql_password }},
+        WORDPRESS_DB_NAME={{ mysql_db_name }}
+      dns_servers:
+        - 192.168.56.101
+        - 192.168.56.102
+  loop: "{{ wordpress_instances[:wordpress_active_instances] }}" 
+
