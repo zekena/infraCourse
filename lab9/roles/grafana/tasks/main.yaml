@@ -9,3 +9,5 @@
     dns_servers:
       - 192.168.56.101
       - 192.168.56.102
+  restart_policy: unless-stopped
+      
