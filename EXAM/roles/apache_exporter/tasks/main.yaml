@@ -1,0 +1,27 @@
+- name: Check that the file exists
+  stat:
+    path: /root/go/src/github.com/digitalocean/apache_exporter/apache_exporter.go
+  register: stat_result
+
+- name: go get
+  shell: "go get github.com/Lusitaniae/apache_exporter"
+  when: stat_result.stat.exists == False
+
+- name: copy binary
+  copy:
+    src: /root/go/bin/apache_exporter
+    dest: /usr/local/bin/apache_exporter
+    mode: u=rwx,g=rx,o=rx
+    remote_src: yes
+
+- name: make a service
+  template:
+    src: templates/apache_exporter.j2
+    dest: /etc/systemd/system/apache_exporter.service
+  notify: restart systemd
+
+- name: start apache_exporter
+  service:
+    name: apache_exporter
+    state: started
+    enabled: yes

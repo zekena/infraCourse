@@ -1,0 +1,39 @@
+- name: install influxdb
+  apt:
+    name: ['influxdb-client','influxdb','python3-pip']
+
+- pip:
+    name: influxdb
+- name: Create database
+  influxdb_database:
+      database_name: "rtt"
+
+- name: check that file exists
+  stat:
+    path: /opt/telegraf_1.12.6-1_amd64.deb
+  register: stat_result
+
+- name: download telegraf
+  get_url:
+    url: https://dl.influxdata.com/telegraf/releases/telegraf_1.12.6-1_amd64.deb
+    dest: /opt/telegraf_1.12.6-1_amd64.deb
+  when: stat_result.stat.exists == False
+
+- name: install telegraf
+  apt:
+    deb: /opt/telegraf_1.12.6-1_amd64.deb
+
+- name: setup syslog
+  template:
+    src: 51-telegraf.conf
+    dest: /etc/rsyslog.d/51-telegraf.conf
+  tags: syslog
+
+  notify:
+    - restart rsyslog
+- name: copy the telegraf conf file
+  template:
+    src: templates/telegraf.conf
+    dest: /etc/telegraf/telegraf.conf
+  notify:
+    - restart telegraf

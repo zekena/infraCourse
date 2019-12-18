@@ -1,0 +1,24 @@
+- name: Create a grafana container
+  docker_container:
+    name: grafana
+    image: "grafana/grafana"
+    detach: True
+    state: started
+    published_ports:
+      - 3000:3000 
+    restart_policy: always
+    dns_servers:
+      - 192.168.56.101
+      - 192.168.56.102
+- name: Create a service for wordpress containers
+  template: 
+    src: templates/grafana.service.j2
+    dest: /etc/systemd/system/grafana.service
+  notify: 
+    - restart systemd
+    - restart grafana
+
+- name: start the service
+  service:
+    name: grafana
+    state: started

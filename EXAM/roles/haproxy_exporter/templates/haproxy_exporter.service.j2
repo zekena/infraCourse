@@ -1,0 +1,9 @@
+[Unit]
+Description=haproxy Exporter
+
+[Service]
+User=root
+ExecStart=/opt/haproxy_exporter/haproxy_exporter --haproxy.scrape-uri="http://www.zekena.ttu/haproxy?stats;csv"
+
+[Install]
+WantedBy=multi-user.target

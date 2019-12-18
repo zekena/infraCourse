@@ -1,0 +1,10 @@
+network:
+    ethernets:
+        enp0s8:
+            {% if dns_role=="master" %}
+            addressses: [192.168.56.101/24]
+            {%else%}
+            addressses: [192.168.56.102/24]
+            {%endif%}
+            dhcp4: false
+    version: 2

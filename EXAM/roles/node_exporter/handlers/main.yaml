@@ -1,0 +1,11 @@
+- name: restart systemd
+  shell : "systemctl daemon-reload"
+
+- name: restart node_exporter
+  service:
+    name: node_exporter
+    state: restarted
+- name: restart rsyslog
+  service:
+    name: rsyslog
+    state: restarted

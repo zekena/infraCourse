@@ -1,0 +1,9 @@
+[Unit]
+Description=Ping Exporter
+
+[Service]
+User=root
+ExecStart=/usr/local/bin/custom_exporter
+
+[Install]
+WantedBy=multi-user.target

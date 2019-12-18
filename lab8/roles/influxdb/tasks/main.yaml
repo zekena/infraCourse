@@ -1,6 +1,6 @@
 - name: install influxdb
   apt:
-    name: ['influxdb-client','influxdb']
+    name: ['influxdb-client','influxdb','python3-pip']
 
 - pip:
     name: influxdb

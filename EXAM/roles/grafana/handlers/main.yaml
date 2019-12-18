@@ -1,0 +1,7 @@
+- name: restart systemd
+  shell : "systemctl daemon-reload"
+
+- name: restart grafana
+  service:
+    name: grafana
+    enabled: yes

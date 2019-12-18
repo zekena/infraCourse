@@ -1,0 +1,27 @@
+---
+- name: All
+  become: yes
+  hosts: all
+  roles:
+    - bind
+    - custom_exporter
+    - node_exporter
+  tags: all
+- name: infra01
+  become: yes
+  hosts: infra01
+  roles:
+    - wordpress
+    - haproxy
+    - haproxy_exporter
+    - grafana
+  tags: infra01
+- name: infra02
+  become: yes
+  hosts: infra02
+  roles:
+    - mysql
+    - prometheus
+    - mysql_exporter
+    - influxdb
+  tags: infra02

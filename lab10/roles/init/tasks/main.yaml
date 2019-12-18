@@ -1,9 +1,0 @@
- - name: place ssh keys
-   authorized_key:
-     user: "{{user}}"
-     key: https://github.com/zekena.keys
-
- - name: disable sudo pass
-   copy:
-     dest: /etc/sudoers.d/{{user}}
-     content: "{{user}} ALL = NOPASSWD: ALL"

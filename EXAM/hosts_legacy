@@ -1,0 +1,4 @@
+[infra01]
+infra01 ansible_host=127.0.0.1 ansible_port=2222  ansible_user=infra01 ansible_python_interpreter=python3
+[infra02]
+infra02 ansible_host=127.0.0.1 ansible_port=2223  ansible_user=infra02 ansible_python_interpreter=python3

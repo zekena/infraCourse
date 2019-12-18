@@ -1,0 +1,48 @@
+---
+- name: setting up infra01
+  hosts: infra01
+  become: yes
+  tasks:
+  - name: place ssh keys
+    authorized_key:
+      user: infra01
+      key: https://github.com/zekena.keys
+
+  - name: disable sudo pass
+    copy:
+      dest: /etc/sudoers.d/infra01
+      content: "infra01 ALL = NOPASSWD: ALL"
+  - name: setup network
+    template:
+      src: 60-enp0s8.j2
+      dest: /etc/netplan/60-enp0s8.yaml
+    notify:
+      - netplan apply
+  handlers:
+    - name: netplan apply
+      shell: "netplan apply"
+  tags: i1
+
+- name: setting up infra02
+  hosts: infra02
+  become: yes
+  tasks:
+  - name: place ssh keys
+    authorized_key:
+      user: infra02
+      key: https://github.com/zekena.keys
+
+  - name: disable sudo pass
+    copy:
+      dest: /etc/sudoers.d/infra02
+      content: "infra02 ALL = NOPASSWD: ALL"
+  - name: setup network
+    template:
+      src: 60-enp0s8.j2
+      dest: /etc/netplan/60-enp0s8.yaml
+    notify:
+      - netplan apply
+  handlers:
+    - name: netplan apply
+      shell: "netplan apply"
+  tags: i2

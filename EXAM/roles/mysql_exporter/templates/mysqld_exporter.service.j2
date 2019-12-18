@@ -1,0 +1,9 @@
+[Unit]
+Description=Mysqld Exporter
+
+[Service]
+User=root
+ExecStart=/opt/mysqld_exporter/mysqld_exporter --config.my-cnf=/home/haman/.my.cnf
+Environment=DATA_SOURCE_NAME='{{ mysql_user }}:{{ my_pass }}@({{ mysql_host }}:3306)/'
+[Install]   
+WantedBy=multi-user.target

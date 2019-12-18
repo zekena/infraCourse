@@ -3,7 +3,7 @@ Description=HAproxy Exporter
 
 [Service]
 User=root
-ExecStart=/opt/haproxy_exporter/haproxy_exporter --haproxy.scrape-uri="http://web.zekena.ttu/proxy-stats
+ExecStart=/opt/haproxy_exporter/haproxy_exporter --haproxy.scrape-uri="http://web.zekena.ttu/haproxy?stats
 
 [Install]
 WantedBy=multi-user.target

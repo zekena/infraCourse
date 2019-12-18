@@ -1,0 +1,4 @@
+---
+dns_role: master
+wordpress_instances: [1, 2, 3]
+wordpress_active_instances: 2

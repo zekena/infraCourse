@@ -1,0 +1,15 @@
+[Unit]
+Description=Wordpress1 container
+Requires=docker.service
+After=docker.service
+[Service]
+Restart=always
+RestartSec=10
+ExecStartPre=-/usr/bin/docker pull wordpress:latest
+ExecStart=/usr/bin/docker run --name www-2 -d -p 8180:80 --env-file /home/infra01/env.list --restart always --dns 192.168.56.101 --dns 192.168.56.101 wordpress:latest
+ExecStop=/usr/bin/docker stop www-2
+ExecStopPost=/bin/docker rm -f www-2
+ExecReload=/bin/docker restart www-2
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,30 @@
+---
+pro_version: 2.14.0
+jobs:
+  - name: prometheus
+    port: 9090
+    targets:
+      - promethues.zekena.ttu
+  - name: ping
+    port: 9105
+    targets:
+      - infra01.zekena.ttu
+      - infra02.zekena.ttu
+  - name: linux
+    port: 9100
+    targets:
+      - infra01.zekena.ttu
+      - infra02.zekena.ttu
+  - name: bind
+    port: 9119
+    targets:
+      - ns1.zekena.ttu
+      - ns2.zekena.ttu
+  - name: mysqld_exporter
+    port: 9104
+    targets:
+      - infra02.zekena.ttu
+  - name: haproxy_exporter
+    port: 9101
+    targets:
+      - infra01.zekena.ttu

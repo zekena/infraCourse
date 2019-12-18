@@ -1,0 +1,29 @@
+- name: check that file exists
+  stat:
+    path: /opt/haproxy_exporter
+  register: stat_result
+- name: create a folder
+  file:
+    path: /opt/haproxy_exporter
+    state: directory
+    mode: '0755'
+  when: stat_result.stat.exists == False
+
+- name: Download haproxy exporter
+  unarchive:
+    src: https://github.com/prometheus/haproxy_exporter/releases/download/v0.10.0/haproxy_exporter-0.10.0.linux-amd64.tar.gz
+    dest: /opt/haproxy_exporter
+    remote_src: yes
+    extra_opts:
+      - --strip-components=1
+  when: stat_result.stat.exists == False
+- name: add haproxy exporter to systemd
+  template:
+    src: templates/haproxy_exporter.service.j2
+    dest: /etc/systemd/system/haproxy_exporter.service
+  notify: restart systemd
+- name: start exporter
+  service:
+    name: haproxy_exporter
+    state: started
+    enabled: yes

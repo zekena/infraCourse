@@ -1,0 +1,56 @@
+- name: install python pip
+  apt:
+    state: latest
+    name: ['docker.io','python3-pip']
+
+- name: Install docker pip
+  pip:
+    name:
+      - docker
+      - requests>=2.20.1
+- name: Wordpress Docker Container
+  docker_container:
+      name: www-{{ item }}
+      image: "wordpress:latest"
+      detach: True
+      published_ports:
+      - 8{{ item }}80:80
+      env: 
+        WORDPRESS_DB_USER={{ mysql_db_user }},
+        WORDPRESS_DB_HOST=db.zekena.ttu:3306,
+        WORDPRESS_DB_PASSWORD={{ mysql_password }},
+        WORDPRESS_DB_NAME={{ mysql_db_name }}
+      restart_policy: always
+      dns_servers:
+        - 192.168.56.101
+        - 192.168.56.102
+  loop: "{{ wordpress_instances[:wordpress_active_instances] }}" 
+- name: move the env list
+  template:
+    src: templates/env.list.j2
+    dest: /home/infra01/env.list
+- name: Create a service for wordpress containers
+  template: 
+    src: templates/www-1.service.j2
+    dest: /etc/systemd/system/www-1.service
+  notify: 
+    - restart systemd
+    - restart www-1
+- name: start the service
+  service:
+    name: www-1
+    state: restarted
+
+- name: Create a service for wordpress containers
+  template: 
+    src: templates/www-2.service.j2
+    dest: /etc/systemd/system/www-2.service
+  notify: 
+    - restart systemd
+    - restart www-2
+
+- name: start the service
+  service:
+    name: www-2
+    state: restarted
+
