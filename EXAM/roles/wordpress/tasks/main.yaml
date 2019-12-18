@@ -32,25 +32,14 @@
 - name: Create a service for wordpress containers
   template: 
     src: templates/www-1.service.j2
-    dest: /etc/systemd/system/www-1.service
+    dest: /etc/systemd/system/www-{{ item }}.service
   notify: 
     - restart systemd
-    - restart www-1
+    - restart www-{{ item }}
+  loop: "{{ wordpress_instances[:wordpress_active_instances] }}" 
 - name: start the service
   service:
-    name: www-1
+    name: www-{{ item }}
     state: restarted
-
-- name: Create a service for wordpress containers
-  template: 
-    src: templates/www-2.service.j2
-    dest: /etc/systemd/system/www-2.service
-  notify: 
-    - restart systemd
-    - restart www-2
-
-- name: start the service
-  service:
-    name: www-2
-    state: restarted
+  loop: "{{ wordpress_instances[:wordpress_active_instances] }}" 
 

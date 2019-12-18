@@ -3,10 +3,5 @@
 
 - name: restart www-1
   service:
-    name: www-1
-    enabled: yes
-
-- name: restart www-2
-  service:
-    name: www-2
+    name: www-{{ item }}
     enabled: yes
