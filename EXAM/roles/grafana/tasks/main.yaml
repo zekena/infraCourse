@@ -8,8 +8,8 @@
       - 3000:3000 
     restart_policy: always
     dns_servers:
-      - 192.168.56.101
-      - 192.168.56.102
+      - "{{ master_ip }}"
+      - "{{ slave_ip }}"
 - name: Create a service for wordpress containers
   template: 
     src: templates/grafana.service.j2

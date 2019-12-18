@@ -23,14 +23,6 @@
   apt:
     deb: /opt/telegraf_1.12.6-1_amd64.deb
 
-- name: setup syslog
-  template:
-    src: 51-telegraf.conf
-    dest: /etc/rsyslog.d/51-telegraf.conf
-  tags: syslog
-
-  notify:
-    - restart rsyslog
 - name: copy the telegraf conf file
   template:
     src: templates/telegraf.conf

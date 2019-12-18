@@ -18,13 +18,13 @@ records:
   - type: A
     entries:
       - name: infra01.zekena.ttu.
-        address: 192.168.56.101
+        address: "{{ master_ip }}"
       - name: infra02.zekena.ttu.
-        address: 192.168.56.102
+        address: "{{ slave_ip }}"
       - name: infra.zekena.ttu.
         addresses:
-          - 192.168.56.101
-          - 192.168.56.102
+          - "{{ master_ip }}"
+          - "{{ slave_ip }}"
   - type: CNAME
     entries:
       - name: ns

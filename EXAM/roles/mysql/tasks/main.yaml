@@ -24,8 +24,8 @@
     password: "{{ wp_mysql_password }}"
     priv: "{{ wp_mysql_db }}.*:ALL"
     state: present
-    host: 192.168.56.101
-    login_host: 192.168.56.102
+    host: "{{ master_ip }}"
+    login_host: "{{ slave_ip }}"
     login_unix_socket: /var/run/mysqld/mysqld.sock
 - name: make mysql accept other networks
   template:

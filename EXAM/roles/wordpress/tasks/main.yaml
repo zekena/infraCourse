@@ -16,14 +16,14 @@
       published_ports:
       - 8{{ item }}80:80
       env: 
-        WORDPRESS_DB_USER={{ mysql_db_user }},
+        WORDPRESS_DB_USER={{ wp_mysql_user }},
         WORDPRESS_DB_HOST=db.zekena.ttu:3306,
-        WORDPRESS_DB_PASSWORD={{ mysql_password }},
-        WORDPRESS_DB_NAME={{ mysql_db_name }}
+        WORDPRESS_DB_PASSWORD={{ wp_mysql_password }},
+        WORDPRESS_DB_NAME={{ wp_mysql_db }}
       restart_policy: always
       dns_servers:
-        - 192.168.56.101
-        - 192.168.56.102
+        - "{{ master_ip }}"
+        - "{{ slave_ip}}"
   loop: "{{ wordpress_instances[:wordpress_active_instances] }}" 
 - name: move the env list
   template:
