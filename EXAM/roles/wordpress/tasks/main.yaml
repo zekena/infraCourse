@@ -31,13 +31,25 @@
     dest: /home/infra01/env.list
 - name: Create a service for wordpress containers
   template: 
-    src: templates/www-1.service.j2
-    dest: /etc/systemd/system/www-1.service
+    src: templates/www-{{ item }}.service.j2
+    dest: /etc/systemd/system/www-{ item }.service
   notify: 
     - restart systemd
-    - restart www-1
+    - restart www-{{ item }}
+  loop: "{{ wordpress_instances[:wordpress_active_instances] }}" 
+
+- name: Create a service for wordpress containers
+  template: 
+    src: templates/www-{{ item }}.service.j2
+    dest: /etc/systemd/system/www-{{ item }}.service
+  notify: 
+    - restart systemd
+    - restart www-{{ item }}
+  loop: "{{ wordpress_instances[:wordpress_active_instances] }}" 
+
 - name: start the service
   service:
-    name: www-1
+    name: www-{{ item }}
     state: restarted
+  loop: "{{ wordpress_instances[:wordpress_active_instances] }}" 
 
