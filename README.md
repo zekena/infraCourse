@@ -21,10 +21,6 @@ ansible-playbook infra.yaml
 ## Built With
 
 * [Ansible](https://www.ansible.com) - Automation Tool
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-
 
 ## Authors
 
